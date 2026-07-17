@@ -31,6 +31,16 @@ The integration also fires `tapo_cloud_device_offline` / `tapo_cloud_device_onli
 
 Each cloud-connectivity sensor exposes a `matter_capable` attribute flagging devices whose hardware is Matter-certified — those can be commissioned into Home Assistant's fully local Matter integration instead. See the [Matter migration guide](docs/MATTER.md) for the long-term exit strategy from TP-Link's protocol churn.
 
+### Local protocol detection
+
+On every poll the integration also broadcasts TP-Link's discovery packets on your LAN (toggleable in options) and reports each device's **local** protocol as sensor attributes:
+
+- `local_protocol`: `iot` (legacy, fully local-capable), `klap`/`aes` (local-capable via the core `tplink` integration), or `tpap` (locked out of local control)
+- `tpap_locked`: `true` when the device can **only** be reached through the cloud — i.e. exactly the devices this integration exists for
+- `locally_controllable`: `true` when you could (also) use Home Assistant's built-in TP-Link integration for instant local control
+
+This gives you a live inventory of which devices the TPAP rollout has claimed so far.
+
 ## Installation
 
 ### Via HACS (recommended)

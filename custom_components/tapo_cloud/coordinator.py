@@ -18,11 +18,14 @@ from .api import (
     TPLinkCloudError,
     TPLinkMFARequiredError,
 )
+from .discovery import LocalInfo, async_probe_local, normalize_mac
 from .const import (
     CONF_KASA_HOST,
     CONF_KASA_REFRESH_TOKEN,
+    CONF_LOCAL_PROBE,
     CONF_TAPO_HOST,
     CONF_TAPO_REFRESH_TOKEN,
+    DEFAULT_LOCAL_PROBE,
     DOMAIN,
     EMETER_MODEL_PREFIXES,
     EVENT_DEVICE_OFFLINE,
@@ -47,6 +50,7 @@ class CloudDevice:
     sysinfo: dict[str, Any] | None = None
     emeter: dict[str, Any] | None = None
     emeter_supported: bool | None = None
+    local: LocalInfo | None = None
 
     @property
     def device_id(self) -> str:
@@ -120,11 +124,19 @@ class TapoCloudCoordinator(DataUpdateCoordinator[dict[str, CloudDevice]]):
         self._emeter_support: dict[str, bool] = {}
 
     async def _async_update_data(self) -> dict[str, CloudDevice]:
+        probe_enabled = self.entry.options.get(CONF_LOCAL_PROBE, DEFAULT_LOCAL_PROBE)
+        probe_task = (
+            asyncio.create_task(async_probe_local()) if probe_enabled else None
+        )
         try:
             raw_devices = await self.bridge.async_get_devices()
         except (TPLinkAuthError, TPLinkMFARequiredError) as err:
+            if probe_task:
+                probe_task.cancel()
             raise ConfigEntryAuthFailed(str(err)) from err
         except TPLinkCloudError as err:
+            if probe_task:
+                probe_task.cancel()
             raise UpdateFailed(f"TP-Link cloud unreachable: {err}") from err
 
         devices = {
@@ -156,6 +168,16 @@ class TapoCloudCoordinator(DataUpdateCoordinator[dict[str, CloudDevice]]):
                 await self._async_fetch_emeter(device)
 
         await asyncio.gather(*(fetch_state(device) for device in devices.values()))
+
+        if probe_task:
+            try:
+                local_results = await probe_task
+            except Exception:  # noqa: BLE001 — probe is strictly best-effort
+                local_results = {}
+            for device in devices.values():
+                mac = normalize_mac(device.info.get("deviceMac"))
+                if mac and mac in local_results:
+                    device.local = local_results[mac]
 
         self._fire_presence_events(devices)
         self._persist_refresh_tokens()

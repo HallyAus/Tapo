@@ -22,7 +22,9 @@ from .api import (
 from .const import (
     CONF_KASA_HOST,
     CONF_KASA_REFRESH_TOKEN,
+    CONF_LOCAL_PROBE,
     CONF_SCAN_INTERVAL,
+    DEFAULT_LOCAL_PROBE,
     CONF_TAPO_HOST,
     CONF_TAPO_REFRESH_TOKEN,
     CONF_TERM_ID,
@@ -230,6 +232,12 @@ class TapoCloudOptionsFlow(OptionsFlow):
                         vol.Coerce(int),
                         vol.Range(min=MIN_SCAN_INTERVAL, max=MAX_SCAN_INTERVAL),
                     ),
+                    vol.Required(
+                        CONF_LOCAL_PROBE,
+                        default=self.config_entry.options.get(
+                            CONF_LOCAL_PROBE, DEFAULT_LOCAL_PROBE
+                        ),
+                    ): bool,
                 }
             ),
         )

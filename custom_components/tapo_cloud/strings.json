@@ -32,10 +32,12 @@
       "init": {
         "title": "Cloud polling",
         "data": {
-          "scan_interval": "Polling interval (seconds)"
+          "scan_interval": "Polling interval (seconds)",
+          "local_probe": "Probe local network for protocol status"
         },
         "data_description": {
-          "scan_interval": "How often to poll the TP-Link cloud for device state. Lower values give faster updates but more cloud traffic."
+          "scan_interval": "How often to poll the TP-Link cloud for device state. Lower values give faster updates but more cloud traffic.",
+          "local_probe": "Broadcasts TP-Link discovery packets each poll to detect whether devices are TPAP-locked or still locally controllable. Results appear as attributes on each device's Cloud connection sensor."
         }
       }
     }

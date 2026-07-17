@@ -13,6 +13,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN, MATTER_NATIVE_MODELS, base_model
 from .coordinator import TapoCloudCoordinator
+from .discovery import LOCALLY_SUPPORTED
 from .entity import TapoCloudEntity
 
 
@@ -69,7 +70,7 @@ class TapoCloudConnectivitySensor(TapoCloudEntity, BinarySensorEntity):
         device = self.device
         if device is None:
             return {}
-        return {
+        attrs: dict[str, Any] = {
             "cloud_type": device.info.get("cloud_type"),
             "device_type": device.device_type,
             "model": device.model,
@@ -80,3 +81,18 @@ class TapoCloudConnectivitySensor(TapoCloudEntity, BinarySensorEntity):
             # commissioned into HA's local Matter integration instead.
             "matter_capable": base_model(device.model) in MATTER_NATIVE_MODELS,
         }
+        if device.local is not None:
+            attrs.update(
+                {
+                    "local_ip": device.local.ip,
+                    "local_protocol": device.local.protocol,
+                    # TPAP = new protocol unsupported by python-kasa;
+                    # cloud (this integration) is the only control path.
+                    "tpap_locked": device.local.protocol == "tpap",
+                    # True when the core `tplink` integration should still
+                    # be able to control this device locally.
+                    "locally_controllable": device.local.protocol
+                    in LOCALLY_SUPPORTED,
+                }
+            )
+        return attrs

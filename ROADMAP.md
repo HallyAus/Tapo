@@ -23,7 +23,7 @@
 - [x] Color and color-temperature support for bulbs (v1.1.0), including
       transitions, for bulbs exposing the lighting service via the cloud.
 - [ ] Tapo hub (KH100) child devices (TRVs, sensors) via cloud.
-- [ ] Per-device "TPAP-locked" detection by probing local discovery, to show
-      which devices still support local control (and could be moved back to
-      the core integration).
+- [x] Per-device "TPAP-locked" detection via local discovery probe (v1.2.0):
+      `local_protocol`, `tpap_locked`, and `locally_controllable` attributes
+      on each Cloud connection sensor.
 - [ ] Publish to the HACS default repository list.

@@ -18,6 +18,8 @@ CONF_TAPO_REFRESH_TOKEN = "tapo_refresh_token"
 CONF_KASA_HOST = "kasa_host"
 CONF_TAPO_HOST = "tapo_host"
 CONF_SCAN_INTERVAL = "scan_interval"
+CONF_LOCAL_PROBE = "local_probe"
+DEFAULT_LOCAL_PROBE = True
 
 DEFAULT_SCAN_INTERVAL = 60
 MIN_SCAN_INTERVAL = 15
