@@ -1,0 +1,64 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "TP-Link account",
+        "description": "Sign in with the account you use in the Tapo and/or Kasa app. Devices are controlled through TP-Link's cloud, so they keep working even when new firmware (TPAP) breaks local control.",
+        "data": {
+          "username": "Email",
+          "password": "Password"
+        }
+      },
+      "mfa": {
+        "title": "Verification code required",
+        "description": "TP-Link sent a verification code to {username} for the {cloud} cloud. Enter it below.",
+        "data": {
+          "code": "Verification code"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid email or password",
+      "invalid_mfa_code": "Invalid verification code",
+      "cannot_connect": "Could not reach the TP-Link cloud"
+    },
+    "abort": {
+      "already_configured": "This TP-Link account is already configured",
+      "reauth_successful": "Re-authentication was successful"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Cloud polling",
+        "data": {
+          "scan_interval": "Polling interval (seconds)"
+        },
+        "data_description": {
+          "scan_interval": "How often to poll the TP-Link cloud for device state. Lower values give faster updates but more cloud traffic."
+        }
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "cloud_connection": {
+        "name": "Cloud connection"
+      }
+    },
+    "sensor": {
+      "current_power": {
+        "name": "Current power"
+      },
+      "voltage": {
+        "name": "Voltage"
+      },
+      "current": {
+        "name": "Current"
+      },
+      "total_energy": {
+        "name": "Total energy"
+      }
+    }
+  }
+}

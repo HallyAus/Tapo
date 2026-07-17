@@ -1,0 +1,14 @@
+{
+  "domain": "tapo_cloud",
+  "name": "Tapo & Kasa Cloud Bridge",
+  "codeowners": ["@HallyAus"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/HallyAus/Tapo",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/HallyAus/Tapo/issues",
+  "loggers": ["custom_components.tapo_cloud"],
+  "requirements": [],
+  "version": "1.0.0"
+}
