@@ -11,7 +11,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, MATTER_NATIVE_MODELS, base_model
 from .coordinator import TapoCloudCoordinator
 from .entity import TapoCloudEntity
 
@@ -72,6 +72,11 @@ class TapoCloudConnectivitySensor(TapoCloudEntity, BinarySensorEntity):
         return {
             "cloud_type": device.info.get("cloud_type"),
             "device_type": device.device_type,
+            "model": device.model,
+            "hardware_version": device.info.get("deviceHwVer"),
             "firmware_version": device.info.get("fwVer"),
             "device_region": device.info.get("deviceRegion"),
+            # True when this hardware is Matter-certified and could be
+            # commissioned into HA's local Matter integration instead.
+            "matter_capable": base_model(device.model) in MATTER_NATIVE_MODELS,
         }

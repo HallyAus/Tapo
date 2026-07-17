@@ -23,11 +23,13 @@ This has hit P100/P105/P110 plugs, P300 strips, wall switches, KH100 hubs, and m
 |---|---|
 | Smart plugs & wall switches (P100/P105/P110/P115, HS1xx, HS2xx, KP1xx, KS2xx, …) | Switch |
 | Power strips (HS300, KP303, KP400, EP40, …) | One switch per outlet |
-| Bulbs (L510/L530, KL series, …) | Light (brightness where supported) |
+| Bulbs (L510/L530, KL series, …) | Light (brightness, color, and color temperature where supported) |
 | Energy-monitoring devices (P110/P115, HS110, KP115/KP125, …) | Power, voltage, current, total energy sensors |
 | **Every device on the account** (incl. hubs, cameras, vacuums) | Cloud connectivity binary sensor |
 
 The integration also fires `tapo_cloud_device_offline` / `tapo_cloud_device_online` events on the Home Assistant event bus when a device drops off or rejoins the TP-Link cloud, so you can build automations that alert you the moment a firmware update knocks something out.
+
+Each cloud-connectivity sensor exposes a `matter_capable` attribute flagging devices whose hardware is Matter-certified — those can be commissioned into Home Assistant's fully local Matter integration instead. See the [Matter migration guide](docs/MATTER.md) for the long-term exit strategy from TP-Link's protocol churn.
 
 ## Installation
 
@@ -75,7 +77,7 @@ Protocol details were derived from the excellent GPL-3.0 [piekstra/tplink-cloud-
 
 - Cloud polling: state changes made outside HA can take up to one polling interval to appear.
 - Requires an internet connection and TP-Link's cloud to be up.
-- Colour/colour-temperature control for bulbs is not implemented yet (on/off + brightness only).
+- Bulb color/color-temperature support depends on the device exposing the Kasa lighting service through the cloud; Tapo bulbs may be limited to on/off.
 - Hubs, sensors, cameras, and vacuums are presence-only (connectivity sensor, no control).
 - TP-Link could change the cloud API at any time; this is an unofficial client.
 

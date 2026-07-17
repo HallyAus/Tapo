@@ -52,3 +52,38 @@ WALL_SWITCH_MODEL_PREFIXES = ("HS2", "KS2", "ES2", "S5", "TS2")
 
 # Model prefixes known to have energy monitoring.
 EMETER_MODEL_PREFIXES = ("HS110", "HS300", "KP115", "KP125", "EP25", "P110", "P115", "P304")
+
+# Matter-certified TP-Link hardware (see docs/MATTER.md). Compared against
+# the base model name with any "(XX)" region suffix stripped.
+MATTER_NATIVE_MODELS = {
+    "P110M",
+    "P125M",
+    "P400M",
+    "KP125M",
+    "S505",
+    "S505D",
+    "S515",
+    "S515D",
+    "L535E",
+    "H100",
+    "H110",
+    "H200",
+    "H500",
+    "T100",
+    "T110",
+    "T310",
+    "T315",
+    "S200D",
+    "RV20 MAX",
+    "RV20 MAX PLUS",
+    "RV30 MAX",
+    "RV30 MAX PLUS",
+    "RV50 PRO OMNI",
+}
+
+
+def base_model(device_model: str | None) -> str:
+    """Strip the region suffix from a cloud deviceModel, e.g. 'P110(EU)'."""
+    if not device_model:
+        return ""
+    return device_model.split("(")[0].strip().upper()
