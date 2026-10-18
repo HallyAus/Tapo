@@ -3,6 +3,8 @@ on:
   push:
     branches: [claude/hacs-home-assistant-devices-fbx5bj]
   workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * 1'
 jobs:
   verify:
     runs-on: personal-ubuntu

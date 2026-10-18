@@ -17,3 +17,11 @@ approved credential handoff. Public URLs/tags are preserved; do not log in,
 operate devices or publish a new release to obtain migration evidence.
 The original Monday04UTC schedule remains deferred until the first full pass
 and independent recovery proof. No paid service or new device route is added.
+
+Run507 passed static validation, official hassfest and private packaging.
+Independent verification matched all19archive files to exact VM300 source;
+identical public recovery created no workflow/check/status/deployment activity.
+The original Monday04UTC private validation cadence is now enrolled with all
+three original Gitea jobs unchanged. Registration and first scheduled firing
+remain separate observations. Official public HACS, installed-device behavior
+and account/device actions remain outside this source proof.
