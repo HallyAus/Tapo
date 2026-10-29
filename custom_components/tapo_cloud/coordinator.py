@@ -149,6 +149,12 @@ class TapoCloudCoordinator(DataUpdateCoordinator[dict[str, CloudDevice]]):
 
         async def fetch_state(device: CloudDevice) -> None:
             if not device.online:
+                _LOGGER.debug(
+                    "Skipping %s (%s): cloud reports status %r, not online",
+                    device.alias,
+                    device.model,
+                    device.info.get("status"),
+                )
                 return
             async with semaphore:
                 try:
